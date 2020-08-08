@@ -113,12 +113,14 @@ const IndexPage = ({ data, pathContext: { langKey, defaultLang, langTextMap } })
 
   const { topNode, navBarNode, anchors, footerNode, sectionsNodes } = breakDownAllNodes(nodes);
 
-  let langSelectorPart;
-  if (langTextMap != null && Object.keys(langTextMap).length > 1) {
-    langSelectorPart = (
-      <LanguageSelector langKey={langKey} defaultLang={defaultLang} langTextMap={langTextMap} />
-    );
-  }
+  // commented out as language selector is not required. - Robi
+
+  // let langSelectorPart;
+  // if (langTextMap != null && Object.keys(langTextMap).length > 1) {
+  //   langSelectorPart = (
+  //     <LanguageSelector langKey={langKey} defaultLang={defaultLang} langTextMap={langTextMap} />
+  //   );
+  // }
 
   return (
     <>
@@ -126,7 +128,8 @@ const IndexPage = ({ data, pathContext: { langKey, defaultLang, langTextMap } })
       <Navbar
         anchors={anchors}
         frontmatter={navBarNode.frontmatter}
-        extraItems={langSelectorPart}
+        // Commented out as language selector is not requried. - Robi
+        // extraItems={langSelectorPart}
       />
       <Top frontmatter={topNode.frontmatter} />
       {
