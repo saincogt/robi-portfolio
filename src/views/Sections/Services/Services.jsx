@@ -1,13 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { useStaticQuery, graphql } from "gatsby";
+
 import { Row, Col } from "react-bootstrap";
 
 import ServiceItem from "components/ServiceItem";
 import SectionHeader from "components/SectionHeader";
 import PageSection from "components/PageSection";
 
-const Services = ({ className, frontmatter }) => {
+const Services = ({ className }) => {
+  const { markdownRemark = {} } = useStaticQuery(graphql`
+    query ServicesQuery {
+      markdownRemark(fields: { fileName: { regex: "/services/i" } }) {
+        frontmatter {
+          anchor
+          header
+          subheader
+          services {
+            content
+            header
+            iconName
+          }
+        }
+      }
+    }
+  `);
+
+  const frontmatter = markdownRemark.frontmatter;
   if (!frontmatter) {
     return null;
   }
@@ -20,9 +40,9 @@ const Services = ({ className, frontmatter }) => {
         <SectionHeader header={rootHeader} subheader={rootSubHeader} />
       </Row>
       <Row className="text-center">
-        {services.map((service) => (
-          <Col md={4} key={service.header}>
-            <ServiceItem {...service} />
+        {services.map(({ header, content, iconName }) => (
+          <Col md={4} key={header}>
+            <ServiceItem iconName={iconName} header={header} content={content} />
           </Col>
         ))}
       </Row>
@@ -32,12 +52,10 @@ const Services = ({ className, frontmatter }) => {
 
 Services.propTypes = {
   className: PropTypes.string,
-  frontmatter: PropTypes.object,
 };
 
 Services.defaultProps = {
   className: null,
-  frontmatter: null,
 };
 
 export default Services;
