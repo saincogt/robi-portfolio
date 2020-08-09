@@ -76,13 +76,5 @@ module.exports = {
         ],
       },
     },
-    {
-      resolve: "gatsby-plugin-i18n",
-      options: {
-        langKeyDefault: defaultLang,
-        useLangKeyLayout: false,
-        pagesPaths: ["/content/"],
-      },
-    },
   ],
 };
