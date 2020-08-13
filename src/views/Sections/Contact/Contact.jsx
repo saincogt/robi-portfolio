@@ -1,11 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { useStaticQuery, graphql } from "gatsby";
+
 import { Row, Col } from "react-bootstrap";
 import Icon from "components/Icon";
 import PageSection from "components/PageSection";
 
-const Contact = ({ className, frontmatter }) => {
+const Contact = ({ className }) => {
+  const { markdownRemark = {} } = useStaticQuery(graphql`
+    query ContactQuery {
+      markdownRemark(fields: { fileName: { regex: "/contact/i" } }) {
+        frontmatter {
+          anchor
+          header
+          subheader
+          telephone
+          email
+        }
+      }
+    }
+  `);
+
+  const frontmatter = markdownRemark.frontmatter;
   if (!frontmatter) {
     return null;
   }
@@ -41,12 +58,10 @@ const Contact = ({ className, frontmatter }) => {
 
 Contact.propTypes = {
   className: PropTypes.string,
-  frontmatter: PropTypes.object,
 };
 
 Contact.defaultProps = {
   className: null,
-  frontmatter: null,
 };
 
 export default Contact;
