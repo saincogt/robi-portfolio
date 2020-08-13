@@ -1,13 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { useStaticQuery, graphql } from "gatsby";
+
 import { Row, Col } from "react-bootstrap";
 import TeamMember from "components/TeamMember";
 import SectionHeader from "components/SectionHeader";
 import PageSection from "components/PageSection";
 import "./Team.scss";
 
-const Team = ({ className, frontmatter }) => {
+const Team = ({ className }) => {
+  const { markdownRemark = {} } = useStaticQuery(graphql`
+    query TeamQuery {
+      markdownRemark(fields: { fileName: { regex: "/team/i" } }) {
+        frontmatter {
+          anchor
+          header
+          subheader
+          content
+          teammember {
+            header
+            imageFileName
+            subheader
+            social {
+              facebook
+              github
+              linkedin
+              medium
+              twitter
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  const frontmatter = markdownRemark.frontmatter;
   if (!frontmatter) {
     return null;
   }
@@ -17,7 +45,7 @@ const Team = ({ className, frontmatter }) => {
     header: rootHeader,
     subheader: rootSubHeader,
     content: rootContent,
-    teamMember,
+    teammember,
   } = frontmatter;
 
   return (
@@ -26,7 +54,7 @@ const Team = ({ className, frontmatter }) => {
         <SectionHeader header={rootHeader} subheader={rootSubHeader} />
       </Row>
       <Row>
-        {teamMember.map(({ header, ...tmProps }) => (
+        {teammember.map(({ header, ...tmProps }) => (
           <Col sm={4} key={header}>
             <TeamMember header={header} {...tmProps} />
           </Col>
@@ -43,12 +71,10 @@ const Team = ({ className, frontmatter }) => {
 
 Team.propTypes = {
   className: PropTypes.string,
-  frontmatter: PropTypes.object,
 };
 
 Team.defaultProps = {
   className: null,
-  frontmatter: null,
 };
 
 export default Team;

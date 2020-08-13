@@ -5,13 +5,7 @@ import Icon from "components/Icon";
 import "./CircleIcon.scss";
 
 const CircleIcon = ({ href, iconName }) => (
-  <a
-    className="circle-icon"
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label={iconName}
-  >
+  <a className="circle-icon" href={href} target="_blank" rel="noopener noreferrer">
     <Icon iconName={iconName} />
   </a>
 );
